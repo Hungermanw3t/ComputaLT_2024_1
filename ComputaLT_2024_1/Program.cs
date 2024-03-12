@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.Tracing;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace ComputaLT_2024_1
 {
@@ -125,15 +128,16 @@ namespace ComputaLT_2024_1
     internal class Program
     {
         #region(methods)
-        static string UsrInptString(string Prompt)
+        static string UsrInptString(string Prompt, [Optional] bool spaceCheck)
         {
             string? usrOtPt;
             while (true)
             {
                 Console.WriteLine(Prompt);
                 usrOtPt = Console.ReadLine();
+                if(spaceCheck == true) { if (usrOtPt != null && usrOtPt.Length != 0 && usrOtPt.Contains(' ')) { break; } }
+                else if (usrOtPt != null && usrOtPt.Length != 0 && spaceCheck != true) { break; }
 
-                if (usrOtPt != null && usrOtPt.Length != 0) { break; }
                 Console.Clear();
             }
             Console.Clear();
@@ -170,8 +174,8 @@ namespace ComputaLT_2024_1
         private static void Name()
         {
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-            string[] userName = UsrInptString("Your Name [First Last]").Split(" ");
-            string[] celebName = UsrInptString("Your celebrity crushes name [First Last]").Split(" ");
+            string[] userName = UsrInptString("Your Name [First Last]", true).Split(" ");
+            string[] celebName = UsrInptString("Your celebrity crushes name [First Last]", true).Split(" ");
             userName[1] = celebName[1];
             string newName = $"{userName[0]} {userName[1]}";
 
